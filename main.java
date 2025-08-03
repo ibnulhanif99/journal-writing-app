@@ -39,3 +39,42 @@ public class Main {
             }
         });
 
+        // Save button
+        JButton saveButton = new JButton("Save Entry");
+        saveButton.setBackground(new Color(0, 120, 215));
+        saveButton.setForeground(Color.BLACK);
+        saveButton.setFocusPainted(false);
+
+        saveButton.addActionListener(e -> {
+            String entry = textArea.getText().trim();
+            if (entry.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Please write something before saving.");
+                return;
+            }
+
+            try {
+                FileWriter fw = new FileWriter("journal_" + today + ".txt", true);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write(entry);
+                writer.newLine();
+                writer.newLine();
+                writer.close();
+
+                JOptionPane.showMessageDialog(frame, "Journal entry saved!");
+                textArea.setText("");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        // Frame layout
+        frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.add(saveButton, BorderLayout.SOUTH);
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(30, 15, 15, 15));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
